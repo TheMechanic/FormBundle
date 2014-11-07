@@ -1,0 +1,30 @@
+field:
+    path:     /
+    defaults: { _controller: "FormBundle:Field:index" }
+
+field_show:
+    path:     /{id}/show
+    defaults: { _controller: "FormBundle:Field:show" }
+
+field_new:
+    path:     /new
+    defaults: { _controller: "FormBundle:Field:new" }
+
+field_create:
+    path:     /create
+    defaults: { _controller: "FormBundle:Field:create" }
+    requirements: { _method: post }
+
+field_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "FormBundle:Field:edit" }
+
+field_update:
+    path:     /{id}/update
+    defaults: { _controller: "FormBundle:Field:update" }
+    requirements: { _method: post|put }
+
+field_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "FormBundle:Field:delete" }
+    requirements: { _method: post|delete }

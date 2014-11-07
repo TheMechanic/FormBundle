@@ -1,0 +1,30 @@
+fieldsgroup:
+    path:     /
+    defaults: { _controller: "FormBundle:FieldsGroup:index" }
+
+fieldsgroup_show:
+    path:     /{id}/show
+    defaults: { _controller: "FormBundle:FieldsGroup:show" }
+
+fieldsgroup_new:
+    path:     /new
+    defaults: { _controller: "FormBundle:FieldsGroup:new" }
+
+fieldsgroup_create:
+    path:     /create
+    defaults: { _controller: "FormBundle:FieldsGroup:create" }
+    requirements: { _method: post }
+
+fieldsgroup_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "FormBundle:FieldsGroup:edit" }
+
+fieldsgroup_update:
+    path:     /{id}/update
+    defaults: { _controller: "FormBundle:FieldsGroup:update" }
+    requirements: { _method: post|put }
+
+fieldsgroup_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "FormBundle:FieldsGroup:delete" }
+    requirements: { _method: post|delete }

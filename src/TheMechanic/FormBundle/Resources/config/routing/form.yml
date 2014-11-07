@@ -1,0 +1,30 @@
+form:
+    path:     /
+    defaults: { _controller: "FormBundle:Form:index" }
+
+form_show:
+    path:     /{id}/show
+    defaults: { _controller: "FormBundle:Form:show" }
+
+form_new:
+    path:     /new
+    defaults: { _controller: "FormBundle:Form:new" }
+
+form_create:
+    path:     /create
+    defaults: { _controller: "FormBundle:Form:create" }
+    requirements: { _method: post }
+
+form_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "FormBundle:Form:edit" }
+
+form_update:
+    path:     /{id}/update
+    defaults: { _controller: "FormBundle:Form:update" }
+    requirements: { _method: post|put }
+
+form_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "FormBundle:Form:delete" }
+    requirements: { _method: post|delete }
