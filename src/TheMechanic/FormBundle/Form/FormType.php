@@ -20,10 +20,12 @@ class FormType extends AbstractType
             ->add('fields', 'collection', array(
                 'type'         => new FieldType(),
                 'allow_add'    => true,
+                'by_reference' => false,
             ))
             ->add('fieldsGroups', 'collection', array(
                 'type'         => new FieldsGroupType(),
                 'allow_add'    => true,
+                'by_reference' => false,
             ))
         ;
     }

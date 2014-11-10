@@ -29,6 +29,7 @@ class FormController extends Controller
             'entities' => $entities,
         ));
     }
+    
     /**
      * Creates a new Form entity.
      *

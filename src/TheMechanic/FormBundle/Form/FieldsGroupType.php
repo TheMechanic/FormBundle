@@ -16,6 +16,11 @@ class FieldsGroupType extends AbstractType
     {
         $builder
             ->add('label')
+            ->add('fields', 'collection', array(
+                'type'         => new FieldType(),
+                'allow_add'    => true,
+                'by_reference' => false,
+            ))
         ;
     }
     

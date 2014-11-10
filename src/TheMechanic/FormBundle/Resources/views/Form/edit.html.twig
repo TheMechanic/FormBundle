@@ -1,16 +1,92 @@
 {% extends '::base.html.twig' %}
 
 {% block body -%}
-    <h1>Form edit</h1>
+    <h1>Form edition</h1>
 
-    {{ form(edit_form) }}
+    {{ form_start(edit_form, {attr : {'novalidate' : 'novalidate' }}) }}
+    <ul class="fields" data-prototype="{{ form_widget(edit_form.fields.vars.prototype)|e }}">
+        {% for field in edit_form.fields if field.vars.data.fieldGroup.id is not defined %}
+            <li>
+                {{ form_row(field.type) }}
+                {{ form_row(field.name) }}
+                {{ form_row(field.placeholder) }}
+                {{ form_row(field.label) }}
+                {{ form_row(field.value) }}
+                {{ form_row(field.isRequired) }}
+            </li>
+        {% endfor %}
+    </ul>
+    <hr />
+    <ul class="fieldsFg" data-prototype="{{ form_widget(edit_form.fieldsGroups.vars.prototype)|e }}">
+        {% for fieldgroup in edit_form.fieldsGroups %}
+            <li>
+                {{ form_row(fieldgroup.label) }}
+                <ul class="fields" data-prototype="{{ form_widget(fieldgroup.fields.vars.prototype)|e }}">
+                    {% for field in fieldgroup.fields %}
+                        <li>
+                        {{ form_row(field.type) }}
+                        {{ form_row(field.name) }}
+                        {{ form_row(field.placeholder) }}
+                        {{ form_row(field.label) }}
+                        {{ form_row(field.value) }}
+                        {{ form_row(field.isRequired) }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+    <hr />
+    {{ form_row(edit_form.name) }}
+    {{ form_row(edit_form.isActive) }}
+    {{ form_widget(edit_form._token) }}
+    {{ form_widget(edit_form.submit) }}
 
-        <ul class="record_actions">
+
+    <ul class="record_actions">
     <li>
         <a href="{{ path('form') }}">
             Back to the list
         </a>
     </li>
-    <li>{{ form(delete_form) }}</li>
 </ul>
+{% endblock %}
+
+{% block javascripts %}
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script>
+    var $collectionHolder;
+
+    $(document).ready(function() {
+
+        $("ul.fields").each(function() {
+            $(this).append('<li><a href="#" class="addFormPart">Add a field</a></li>');
+        });
+
+        $("ul.fieldsFg").each(function() {
+            $(this).append('<li><a href="#" class="addFormPart">Add a fieldGroup</a></li>');
+        });
+
+        $(".addFormPart").on('click', function (e) {
+            e.preventDefault();
+            $collectionHolder = $(this).parent().parent();
+            var index = $collectionHolder.find(':input').length;
+            addFieldForm($collectionHolder, $(this).parent("li"), index);
+        });
+    });
+
+    function addFieldForm($collectionHolder, $newLLi, index) {
+        // Get the data-prototype explained earlier
+        var prototype = $collectionHolder.data('prototype');
+
+        // Replace '__name__' in the prototype's HTML to
+        // instead be a number based on how many items we have
+        var newForm = prototype.replace(/__name__/g, index);
+
+        // Display the form in the page in an li, before the "Add a tag" link li
+        var $newFormLi = $('<li></li>').append(newForm);
+        $newLLi.before($newFormLi);
+    }
+
+</script>
 {% endblock %}

@@ -29,7 +29,7 @@ class Field
     protected $name;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(type="string", length=100, nullable=true)
      */
     protected $placeholder;
 
@@ -42,6 +42,21 @@ class Field
      * @ORM\Column(type="string", length=255)
      */
     protected $value;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Form", inversedBy="fields")
+     */
+    protected $form;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="FieldsGroup", inversedBy="fields")
+     */
+    protected $fieldGroup;
+
+    /**
+     * @ORM\Column(name="is_required", type="boolean", nullable=true)
+     */
+    protected $isRequired;
 
     /**
      * Get id
@@ -166,5 +181,74 @@ class Field
     public function getValue()
     {
         return $this->value;
+    }
+
+    /**
+     * Set form
+     *
+     * @param \TheMechanic\FormBundle\Entity\Form $form
+     * @return Field
+     */
+    public function setForm(\TheMechanic\FormBundle\Entity\Form $form = null)
+    {
+        $this->form = $form;
+
+        return $this;
+    }
+
+    /**
+     * Get form
+     *
+     * @return \TheMechanic\FormBundle\Entity\Form 
+     */
+    public function getForm()
+    {
+        return $this->form;
+    }
+
+    /**
+     * Set fieldGroup
+     *
+     * @param string $fieldGroup
+     * @return Field
+     */
+    public function setFieldGroup($fieldGroup)
+    {
+        $this->fieldGroup = $fieldGroup;
+
+        return $this;
+    }
+
+    /**
+     * Get fieldGroup
+     *
+     * @return string 
+     */
+    public function getFieldGroup()
+    {
+        return $this->fieldGroup;
+    }
+
+    /**
+     * Set isRequired
+     *
+     * @param boolean $isRequired
+     * @return Field
+     */
+    public function setIsRequired($isRequired)
+    {
+        $this->isRequired = $isRequired;
+
+        return $this;
+    }
+
+    /**
+     * Get isRequired
+     *
+     * @return boolean 
+     */
+    public function getIsRequired()
+    {
+        return $this->isRequired;
     }
 }

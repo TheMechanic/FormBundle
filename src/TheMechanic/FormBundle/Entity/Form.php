@@ -107,12 +107,13 @@ class Form
     /**
      * Add fields
      *
-     * @param \TheMechanic\FormBundle\Entity\Fields $fields
+     * @param \TheMechanic\FormBundle\Entity\Fields $field
      * @return Form
      */
-    public function addField(\TheMechanic\FormBundle\Entity\Field $fields)
+    public function addField(\TheMechanic\FormBundle\Entity\Field $field)
     {
-        $this->fields[] = $fields;
+        $field->setForm($this);
+        $this->fields[] = $field;
 
         return $this;
     }
@@ -120,11 +121,11 @@ class Form
     /**
      * Remove fields
      *
-     * @param \TheMechanic\FormBundle\Entity\Fields $fields
+     * @param \TheMechanic\FormBundle\Entity\Fields $field
      */
-    public function removeField(\TheMechanic\FormBundle\Entity\Field $fields)
+    public function removeField(\TheMechanic\FormBundle\Entity\Field $field)
     {
-        $this->fields->removeElement($fields);
+        $this->fields->removeElement($field);
     }
 
     /**
@@ -143,9 +144,10 @@ class Form
      * @param \TheMechanic\FormBundle\Entity\FieldsGroup $fieldsGroups
      * @return Form
      */
-    public function addFieldsGroup(\TheMechanic\FormBundle\Entity\FieldsGroup $fieldsGroups)
+    public function addFieldsGroup(\TheMechanic\FormBundle\Entity\FieldsGroup $fieldsGroup)
     {
-        $this->fieldsGroups[] = $fieldsGroups;
+        $fieldsGroup->setForm($this);
+        $this->fieldsGroups[] = $fieldsGroup;
 
         return $this;
     }
@@ -155,9 +157,9 @@ class Form
      *
      * @param \TheMechanic\FormBundle\Entity\FieldsGroup $fieldsGroups
      */
-    public function removeFieldsGroup(\TheMechanic\FormBundle\Entity\FieldsGroup $fieldsGroups)
+    public function removeFieldsGroup(\TheMechanic\FormBundle\Entity\FieldsGroup $fieldsGroup)
     {
-        $this->fieldsGroups->removeElement($fieldsGroups);
+        $this->fieldsGroups->removeElement($fieldsGroup);
     }
 
     /**

@@ -24,9 +24,14 @@ class FieldsGroup
     protected $label;
 
     /**
-     * @ORM\OneToMany(targetEntity="Field", mappedBy="form", cascade={"remove", "persist"})
+     * @ORM\OneToMany(targetEntity="Field", mappedBy="fieldGroup", cascade={"remove", "persist"})
      */
     protected $fields;
+
+    /**
+    * @ORM\ManyToOne(targetEntity="Form", inversedBy="fieldsGroups", cascade={"remove", "persist"})
+     */
+    protected $form;
 
     /**
      * Constructor
@@ -70,26 +75,28 @@ class FieldsGroup
     }
 
     /**
-     * Add fields
+     * Add field
      *
-     * @param \TheMechanic\FormBundle\Entity\Fields $fields
+     * @param \TheMechanic\FormBundle\Entity\Fields $field
      * @return FieldsGroup
      */
-    public function addField(\TheMechanic\FormBundle\Entity\Field $fields)
+    public function addField(\TheMechanic\FormBundle\Entity\Field $field)
     {
-        $this->fields[] = $fields;
+        $field->setFieldGroup($this);
+        $field->setForm($this->getForm());
+        $this->fields[] = $field;
 
         return $this;
     }
 
     /**
-     * Remove fields
+     * Remove field
      *
-     * @param \TheMechanic\FormBundle\Entity\Fields $fields
+     * @param \TheMechanic\FormBundle\Entity\Fields $field
      */
-    public function removeField(\TheMechanic\FormBundle\Entity\Field $fields)
+    public function removeField(\TheMechanic\FormBundle\Entity\Field $field)
     {
-        $this->fields->removeElement($fields);
+        $this->fields->removeElement($field);
     }
 
     /**
@@ -100,5 +107,28 @@ class FieldsGroup
     public function getFields()
     {
         return $this->fields;
+    }
+
+    /**
+     * Set form
+     *
+     * @param \TheMechanic\FormBundle\Entity\Form $form
+     * @return FieldsGroup
+     */
+    public function setForm(\TheMechanic\FormBundle\Entity\Form $form = null)
+    {
+        $this->form = $form;
+
+        return $this;
+    }
+
+    /**
+     * Get form
+     *
+     * @return \TheMechanic\FormBundle\Entity\Form 
+     */
+    public function getForm()
+    {
+        return $this->form;
     }
 }

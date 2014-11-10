@@ -16,12 +16,18 @@ class FieldType extends AbstractType
     {
         $builder
             ->add('type', 'choice', array(
-                'choices'   => array('text', 'checkbox', 'radio', 'select'),
+                'choices'   => array(
+                    'text' => 'text', 
+                    'checkbox' => 'checkbox', 
+                    'radio' => 'radio', 
+                    'select' => 'select',
+                ),
             ))
             ->add('name')
             ->add('placeholder')
             ->add('label')
             ->add('value')
+            ->add('isRequired')
         ;
     }
     
