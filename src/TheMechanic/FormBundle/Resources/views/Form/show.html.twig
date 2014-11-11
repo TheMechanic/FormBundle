@@ -20,17 +20,23 @@
         </tbody>
     </table>
 
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('form') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>
-        <a href="{{ path('form_edit', { 'id': entity.id }) }}">
-            Edit
-        </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
+    <ul class="record_actions">
+        <li>
+            <a href="{{ path('form') }}">
+                Back to the list
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('form_edit', { 'id': entity.id }) }}">
+                Edit
+            </a>
+        </li>
+        <li>{{ form(delete_form) }}</li>
+    </ul>
+
+    <h3>{{ answers|length }} form(s) submited</h3>
+    {% for answer in answers %}
+        {{ answer.createdAt|date("m/d/Y") }}<br />
+    {% endfor %}
+
 {% endblock %}

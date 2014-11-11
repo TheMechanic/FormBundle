@@ -19,8 +19,7 @@ class Answer
     protected $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="Form")
-     * @ORM\JoinColumn(name="form_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="Form")
      */
     protected $form;
 

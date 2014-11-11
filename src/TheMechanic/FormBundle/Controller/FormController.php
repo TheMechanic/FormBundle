@@ -102,11 +102,27 @@ class FormController extends Controller
             throw $this->createNotFoundException('Unable to find Form entity.');
         }
 
+        //$answers = $em->getRepository('FormBundle:Answer')->findByForm($entity);
+
+        $query = $em->getRepository('FormBundle:Answer')->createQueryBuilder('a')
+            ->select('a, al, field')
+            ->join('a.form', 'f')
+            ->where('f.id = :formid')
+            ->join('a.answerlines', 'al')
+            ->join('al.field', 'field')
+            //->andWhere('field.correctValue = al.value')
+            ->setParameter('formid', $id)
+            ->getQuery();
+
+        $answers = $query->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+        print_r($answers);die;
+
         $deleteForm = $this->createDeleteForm($id);
 
         return $this->render('FormBundle:Form:show.html.twig', array(
             'entity'      => $entity,
             'delete_form' => $deleteForm->createView(),
+            'answers'    => $answers,
         ));
     }
 

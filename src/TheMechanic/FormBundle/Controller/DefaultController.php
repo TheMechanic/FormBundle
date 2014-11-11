@@ -98,15 +98,18 @@ class DefaultController extends Controller
         $answer->setForm($form);
         
         foreach ($data as $key => $value) {
-            $fieldId = explode('-', $key)[1];
-            $field = $em->getRepository('FormBundle:Field')->find($fieldId);
-            if (!$field)
-                throw $this->createNotFoundException('Unable to find Field entity.');
+            $fname = explode('-', $key);
+            $fieldId = $fname[1];
+            if ($fname[0] == 'field') {
+                $field = $em->getRepository('FormBundle:Field')->find($fieldId);
+                if (!$field)
+                    throw $this->createNotFoundException('Unable to find Field entity.');
 
-            $Answerline = new Answerline();
-            $Answerline->setField($field);
-            $Answerline->setValue($value);
-            $answer->addAnswerline($Answerline);
+                $Answerline = new Answerline();
+                $Answerline->setField($field);
+                $Answerline->setValue($value);
+                $answer->addAnswerline($Answerline);
+            }
         }
 
         $em->persist($answer);
