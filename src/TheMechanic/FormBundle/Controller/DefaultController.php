@@ -66,6 +66,12 @@ class DefaultController extends Controller
         }
 
         foreach ($form->getFieldsGroups() as $fg) {
+            $formOjbect->add('title-' . $fg->getId(), 'text', array(
+                    'label'     => $fg->getLabel(),
+                    'required'  => false,
+                    'read_only' => true,
+                    'disabled'  => true,
+                ));
             foreach ($fg->getFields() as $field) {
                 $constraints = array();
 

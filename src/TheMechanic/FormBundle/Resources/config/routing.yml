@@ -1,15 +1,7 @@
-form_fieldsgroup:
-    resource: "@FormBundle/Resources/config/routing/fieldsgroup.yml"
-    prefix:   /fieldsgroup
-
-form_field:
-    resource: "@FormBundle/Resources/config/routing/field.yml"
-    prefix:   /field
-
 form_form:
     resource: "@FormBundle/Resources/config/routing/form.yml"
     prefix:   /form
 
 form_homepage:
-    path:     /hello/{name}
+    path:     /
     defaults: { _controller: FormBundle:Default:index }
