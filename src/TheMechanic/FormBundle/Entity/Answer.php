@@ -23,6 +23,11 @@ class Answer
      * @ORM\JoinColumn(name="form_id", referencedColumnName="id")
      */
     protected $form;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Answerline", mappedBy="answer", cascade={"remove", "persist"})
+     */
+    protected $answerlines;
     
     /**
      * @ORM\Column(type="datetime", name="created_at")
@@ -83,5 +88,47 @@ class Answer
     public function getForm()
     {
         return $this->form;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->answerlines = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->setCreatedAt(new \DateTime());
+    }
+
+    /**
+     * Add answerlines
+     *
+     * @param \TheMechanic\FormBundle\Entity\Answerline $answerlines
+     * @return Answer
+     */
+    public function addAnswerline(\TheMechanic\FormBundle\Entity\Answerline $answerlines)
+    {
+        $answerlines->setAnswer($this);
+        $this->answerlines[] = $answerlines;
+
+        return $this;
+    }
+
+    /**
+     * Remove answerlines
+     *
+     * @param \TheMechanic\FormBundle\Entity\Answerline $answerlines
+     */
+    public function removeAnswerline(\TheMechanic\FormBundle\Entity\Answerline $answerlines)
+    {
+        $this->answerlines->removeElement($answerlines);
+    }
+
+    /**
+     * Get answerlines
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAnswerlines()
+    {
+        return $this->answerlines;
     }
 }

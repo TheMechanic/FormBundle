@@ -6,6 +6,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
+use TheMechanic\FormBundle\Entity\FieldsGroup;
+use TheMechanic\FormBundle\Entity\Answer;
+use TheMechanic\FormBundle\Entity\Answerline;
+
 class DefaultController extends Controller
 {
 
@@ -16,7 +20,7 @@ class DefaultController extends Controller
     public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $form = $em->getRepository('FormBundle:Form')->find(5);
+        $form = $em->getRepository('FormBundle:Form')->find(1);
 
         if (!$form)
             throw $this->createNotFoundException('Unable to find Form entity.');
@@ -27,8 +31,8 @@ class DefaultController extends Controller
 
         if ($dynamicForm->isValid()) {
             $data = $dynamicForm->getData();
-            var_dump($data);
             $this->persistAnswer($form, $data);
+            echo "Form submited :)";
             die;
         }
 
@@ -47,21 +51,29 @@ class DefaultController extends Controller
         $formOjbect = $this->createFormBuilder();
 
         foreach ($form->getFields() as $field) {
-            $constraints = array();
-            if ($field->getIsRequired())
-                $constraints[] = new NotBlank();
-            $formOjbect->add($field->getName(), $field->getType(), array(
-                'required' => $field->getIsRequired(),
-                'constraints' => $constraints,
-            ));
+            if ($field->getFieldGroup()->getId() === null) {
+                $constraints = array();
+
+                if ($field->getIsRequired())
+                    $constraints[] = new NotBlank();
+
+                $formOjbect->add('field-' . $field->getId(), $field->getType(), array(
+                    'label' => $field->getLabel(),
+                    'required' => $field->getIsRequired(),
+                    'constraints' => $constraints,
+                ));
+            }
         }
 
         foreach ($form->getFieldsGroups() as $fg) {
             foreach ($fg->getFields() as $field) {
                 $constraints = array();
+
                 if ($field->getIsRequired())
                     $constraints[] = new NotBlank();
-                $formOjbect->add($field->getName(), $field->getType(), array(
+
+                $formOjbect->add('field-' . $field->getId(), $field->getType(), array(
+                    'label' => $field->getLabel(),
                     'required' => $field->getIsRequired(),
                     'constraints' => $constraints,
                 ));
@@ -75,6 +87,23 @@ class DefaultController extends Controller
 
     private function persistAnswer($form, $data)
     {
+        $em = $this->getDoctrine()->getManager();
+        $answer = new Answer();
+        $answer->setForm($form);
         
+        foreach ($data as $key => $value) {
+            $fieldId = explode('-', $key)[1];
+            $field = $em->getRepository('FormBundle:Field')->find($fieldId);
+            if (!$field)
+                throw $this->createNotFoundException('Unable to find Field entity.');
+
+            $Answerline = new Answerline();
+            $Answerline->setField($field);
+            $Answerline->setValue($value);
+            $answer->addAnswerline($Answerline);
+        }
+
+        $em->persist($answer);
+        $em->flush();
     }
 }

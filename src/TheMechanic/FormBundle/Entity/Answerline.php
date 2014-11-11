@@ -19,7 +19,7 @@ class Answerline
     protected $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="Answer")
+     * @ORM\ManyToOne(targetEntity="Answer")
      */
     protected $answer;
 
