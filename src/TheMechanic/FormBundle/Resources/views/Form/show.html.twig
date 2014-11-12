@@ -34,9 +34,14 @@
         <li>{{ form(delete_form) }}</li>
     </ul>
 
-    <h3>{{ answers|length }} form(s) submited</h3>
-    {% for answer in answers %}
-        {{ answer.createdAt|date("m/d/Y") }}<br />
-    {% endfor %}
+    <h3>{{ formStats|length }} form(s) submited</h3>
 
+    <table>
+        <tr><th>Date</th><th>Good</th><th>Bad</th></tr>
+        {% for stat in formStats %}
+            <tr>
+                <td>{{ stat.createdAt|date("m/d/Y") }}</td><td>{{ stat.good }}</td><td>{{ stat.bad }}</td>
+            </tr>
+        {% endfor %}
+    </table>
 {% endblock %}

@@ -44,6 +44,11 @@ class Field
     protected $value;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    protected $correctAnswer;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Form", inversedBy="fields")
      */
     protected $form;
@@ -250,5 +255,28 @@ class Field
     public function getIsRequired()
     {
         return $this->isRequired;
+    }
+
+    /**
+     * Set correctAnswer
+     *
+     * @param string $correctAnswer
+     * @return Field
+     */
+    public function setCorrectAnswer($correctAnswer)
+    {
+        $this->correctAnswer = $correctAnswer;
+
+        return $this;
+    }
+
+    /**
+     * Get correctAnswer
+     *
+     * @return string 
+     */
+    public function getCorrectAnswer()
+    {
+        return $this->correctAnswer;
     }
 }

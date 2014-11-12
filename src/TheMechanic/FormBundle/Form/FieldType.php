@@ -27,6 +27,7 @@ class FieldType extends AbstractType
             ->add('placeholder')
             ->add('label')
             ->add('value')
+            ->add('correctAnswer')
             ->add('isRequired')
         ;
     }

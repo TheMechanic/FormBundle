@@ -19,7 +19,7 @@ class Answerline
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Answer")
+     * @ORM\ManyToOne(targetEntity="Answer", inversedBy="answerlines")
      */
     protected $answer;
 

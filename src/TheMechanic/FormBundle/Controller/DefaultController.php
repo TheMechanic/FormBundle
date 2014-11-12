@@ -20,7 +20,7 @@ class DefaultController extends Controller
     public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $form = $em->getRepository('FormBundle:Form')->find(1);
+        $form = $em->getRepository('FormBundle:Form')->find(5);
 
         if (!$form)
             throw $this->createNotFoundException('Unable to find Form entity.');
@@ -41,6 +41,8 @@ class DefaultController extends Controller
         ));
     }
 
+    // @TODO : these 2 following function have to be put in a separate class (service)
+
     /**
      * [createDynamicForm description]
      * @param  [type] $form [description]
@@ -51,7 +53,9 @@ class DefaultController extends Controller
         $formOjbect = $this->createFormBuilder();
 
         foreach ($form->getFields() as $field) {
-            if ($field->getFieldGroup()->getId() === null) {
+
+            // Only display fields without FieldsGroup
+            if (!$field->getFieldGroup() instanceof FieldsGroup) {
                 $constraints = array();
 
                 if ($field->getIsRequired())
@@ -66,12 +70,16 @@ class DefaultController extends Controller
         }
 
         foreach ($form->getFieldsGroups() as $fg) {
+
+            // Display fieldsGroup label (we use a disabled input text, we will hide later by css or formtheming)
             $formOjbect->add('title-' . $fg->getId(), 'text', array(
-                    'label'     => $fg->getLabel(),
-                    'required'  => false,
-                    'read_only' => true,
-                    'disabled'  => true,
-                ));
+                'label'     => $fg->getLabel(),
+                'required'  => false,
+                'read_only' => true,
+                'disabled'  => true,
+            ));
+
+            // Display each field
             foreach ($fg->getFields() as $field) {
                 $constraints = array();
 

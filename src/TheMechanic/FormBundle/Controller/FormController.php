@@ -102,27 +102,39 @@ class FormController extends Controller
             throw $this->createNotFoundException('Unable to find Form entity.');
         }
 
-        //$answers = $em->getRepository('FormBundle:Answer')->findByForm($entity);
-
         $query = $em->getRepository('FormBundle:Answer')->createQueryBuilder('a')
             ->select('a, al, field')
             ->join('a.form', 'f')
             ->where('f.id = :formid')
             ->join('a.answerlines', 'al')
             ->join('al.field', 'field')
-            //->andWhere('field.correctValue = al.value')
+            ->groupBy('a.id, al')
             ->setParameter('formid', $id)
             ->getQuery();
 
         $answers = $query->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
-        print_r($answers);die;
+
+
+        // parse result
+        $formStats = array();
+
+        foreach ($answers as $answer) {
+            $formStats[$answer['id']] = array();
+            $formStats[$answer['id']]['createdAt'] = $answer['createdAt'];
+            $formStats[$answer['id']]['good'] = 0;
+            $formStats[$answer['id']]['bad'] = 0;
+            foreach ($answer['answerlines'] as $al) {
+                $goodorbad = $al['value'] == $al['field']['correctAnswer'] ? 'good' : 'bad';
+                $formStats[$answer['id']][$goodorbad] = $formStats[$answer['id']][$goodorbad] + 1;       
+            }
+        }
 
         $deleteForm = $this->createDeleteForm($id);
 
         return $this->render('FormBundle:Form:show.html.twig', array(
             'entity'      => $entity,
             'delete_form' => $deleteForm->createView(),
-            'answers'    => $answers,
+            'formStats'   => $formStats,
         ));
     }
 
